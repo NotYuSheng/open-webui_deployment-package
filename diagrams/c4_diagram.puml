@@ -1,0 +1,23 @@
+@startuml ContainerDiagram
+!includeurl https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Container.puml
+
+Person(user, "End User", "Uses the web UI and logs in via SSO")
+
+System_Boundary(openui, "Open WebUI System") {
+  Container(ui,  "SvelteKit SPA",   "Svelte",         "Browser SPA; HTTPS/JSON & WebSocket")
+  Container(app, "Open WebUI API",  "Python / FastAPI","Auth, session mgmt, business logic")
+  Container(db,  "SQLite Database","SQLite",          "Embedded DB for users, sessions, logs, RAG")
+}
+
+Container_Ext(keycloak, "Keycloak",   "Java / WildFly", "OAuth2 / OpenID Connect SSO Provider")
+Container_Ext(vllm,     "vLLM Service","Python / vLLM",   "OpenAI-compatible LLM inference server")
+
+Rel(user, keycloak, "Authenticates with",     "OIDC")
+Rel(user, ui,       "Uses via browser",       "HTTPS / JSON")
+Rel(ui,   app,      "Calls API endpoints",    "HTTPS / JSON")
+Rel(ui,   app,      "Streams responses",      "WebSocket (Socket.IO)")
+Rel(app,  keycloak, "Validates tokens",       "OIDC")
+Rel(app,  db,       "Reads/writes data",       "SQL")
+Rel(app,  vllm,     "Requests inference",      "HTTPS / JSON")
+@enduml
+
