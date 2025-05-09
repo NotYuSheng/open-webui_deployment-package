@@ -2,6 +2,8 @@
 
 This repository contains a Helm chart for deploying a customized, secured version of [Open WebUI](https://github.com/open-webui/open-webui) with branding, Keycloak authentication, and OpenShift-compatible security.
 
+This repository is hosted at: [NotYuSheng/open-webui_deployment-package](https://github.com/NotYuSheng/open-webui_deployment-package)
+
 ---
 
 ## Loading Image from Tar into OpenShift Internal Registry
